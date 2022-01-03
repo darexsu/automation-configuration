@@ -1,1 +1,1 @@
-# my
+# My automation and configuration
