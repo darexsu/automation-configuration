@@ -1,0 +1,44 @@
+VAGRANT_BASE = "debian/bullseye64"
+VAGRANT_BRIDGE = "Qualcomm Atheros AR8161 PCI-E Gigabit Ethernet Controller (NDIS 6.30)"
+VAGRANT_MAC = "0800273CBAAB"
+VAGRANT_INSTALL_ANSIBLE = <<-'SCRIPT'
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg2 lsb-release
+sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main">/etc/apt/sources.list.d/ansible.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 93C4A3FD7BB9C367
+sudo apt update
+sudo apt install -y ansible
+sudo apt install -y sshpass
+sudo apt install -y git
+SCRIPT
+VAGRANT_INSTALL_DOCKER = <<-'SCRIPT'
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+sudo groupadd docker
+sudo usermod -aG docker vagrant
+sudo newgrp docker
+SCRIPT
+
+  
+Vagrant.configure("2") do |config|
+  config.vm.box = VAGRANT_BASE
+  config.vm.network "public_network", bridge: VAGRANT_BRIDGE, mac: VAGRANT_MAC
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "debian11"
+    vb.memory = "2048"
+    vb.cpus = 2
+	
+  end
+  
+  config.vm.hostname = "debian11"
+  config.vm.synced_folder ".", "/home/vagrant/host",
+    owner: "vagrant", group: "vagrant"  
+  config.vm.network "forwarded_port", guest: 80, host: 8000  
+ 
+  config.vm.provision "shell", inline: VAGRANT_INSTALL_ANSIBLE, run: "once"
+  config.vm.provision "shell", inline: VAGRANT_INSTALL_DOCKER, run: "once"
+ 
+end
