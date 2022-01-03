@@ -1,3 +1,5 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 VAGRANT_BASE = "debian/bullseye64"
 VAGRANT_BRIDGE = "Qualcomm Atheros AR8161 PCI-E Gigabit Ethernet Controller (NDIS 6.30)"
 VAGRANT_MAC = "0800273CBAAB"
