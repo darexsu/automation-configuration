@@ -1,14 +1,11 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-# Testing environment
-VAGRANT_BASE = "debian/bullseye64"
+VAGRANT_BASE = "ubuntu/focal64"
 VAGRANT_BRIDGE = "Qualcomm Atheros AR8161 PCI-E Gigabit Ethernet Controller (NDIS 6.30)"
 VAGRANT_MAC = "0800273CBAAB"
 
 VAGRANT_INSTALL_ANSIBLE = <<-'SCRIPT'
 sudo apt update
 sudo apt install -y ca-certificates curl gnupg2 lsb-release
-sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main">/etc/apt/sources.list.d/ansible.list
+sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 93C4A3FD7BB9C367
 sudo apt update
 sudo apt install -y ansible
@@ -17,13 +14,11 @@ sudo apt install -y git
 SCRIPT
 
 VAGRANT_INSTALL_DOCKER = <<-'SCRIPT'
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io
-sudo groupadd docker
 sudo usermod -aG docker vagrant
-sudo newgrp docker
 SCRIPT
 
 VAGRANT_INSTALL_MOLECULE = <<-'SCRIPT'
@@ -31,8 +26,9 @@ sudo apt install -y python3-pip
 sudo apt install -y libssl-dev
 sudo apt install -y python3-venv
 sudo apt install -y python3-docker
-python3 -m pip install --upgrade --user setuptools
-python3 -m pip install --user "molecule[docker,lint]"
+pip3 install --upgrade --user setuptools
+pip3 install --user "ansible-lint[yamllint]"
+pip3 install --user "molecule[docker,lint]"
 . ./.profile
 SCRIPT
   
@@ -42,14 +38,14 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false 
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "debian-control"
+    vb.name = "ubuntu-control"
     vb.memory = "2048"
     vb.cpus = 2
 	
   end
   
-  config.vm.hostname = "debian-control"
-  config.vm.synced_folder ".", "/home/vagrant/host",
+  config.vm.hostname = "ubuntu-control"
+  config.vm.synced_folder "./roles/", "/home/vagrant/roles/",
     owner: "vagrant", group: "vagrant"  
   config.vm.network "forwarded_port", guest: 80, host: 8000  
  
@@ -58,5 +54,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: VAGRANT_INSTALL_MOLECULE, run: "once", privileged: false
   
   config.vm.provision "file", source: "~/.vagrant.d/insecure_private_key", destination: "~/.ssh/id_rsa"
-	
+  config.vm.provision "shell", inline: "sudo chmod 600 ~/.ssh/id_rsa", privileged: false
+ 
 end
