@@ -6,3 +6,6 @@ fi
 if [ "$1" != "mariadb" ]; then
 ansible-galaxy install darexsu.mariadb
 fi
+if [ "$1" != "nginx" ]; then
+ansible-galaxy install darexsu.nginx
+fi
