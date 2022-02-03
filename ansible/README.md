@@ -1,4 +1,4 @@
 ```
 #root
-wget -O - https://raw.githubusercontent.com/darexsu/scripts/main/ansible/requirements.sh | bash <(cat) </dev/tty
+wget https://raw.githubusercontent.com/darexsu/scripts/main/ansible/requirements.sh | chmod u+x ./requirements.sh | ./requirements.sh
 ```
