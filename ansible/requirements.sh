@@ -1,8 +1,5 @@
 #!/bin/bash
-echo "---
-- name: darexsu.php
 
-- name: darexsu.mariadb
-
-" > "requirements.yml"
-ansible-galaxy install -r requirements.yml
+if [ $1 != 'php' ]; then
+ansible-galaxy install darexsu.php
+fi
