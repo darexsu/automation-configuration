@@ -15,3 +15,6 @@ fi
 if [ "$1" != "zabbix_server" ]; then
 ansible-galaxy install darexsu.zabbix_server
 fi
+if [ "$1" != "apache" ]; then
+ansible-galaxy install darexsu.apache
+fi
