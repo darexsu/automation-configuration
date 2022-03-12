@@ -26,3 +26,6 @@ fi
 if [ "$1" != "mysql" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.mysql
 fi
+if [ "$1" != "molecule" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.molecule
+fi
