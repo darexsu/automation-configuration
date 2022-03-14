@@ -29,3 +29,6 @@ fi
 if [ "$1" != "molecule" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.molecule
 fi
+if [ "$1" != "firewalld" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.firewalld
+fi
