@@ -32,3 +32,6 @@ fi
 if [ "$1" != "firewalld" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.firewalld
 fi
+if [ "$1" != "elasticsearch" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.elasticsearch
+fi
