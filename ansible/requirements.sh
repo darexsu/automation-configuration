@@ -35,3 +35,9 @@ fi
 if [ "$1" != "elasticsearch" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.elasticsearch
 fi
+if [ "$1" != "kibana" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.kibana
+fi
+if [ "$1" != "logstash" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.logstash
+fi
