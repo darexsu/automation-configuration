@@ -51,3 +51,7 @@ sleep 2s
 if [ "$1" != "elk" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.elk
 fi
+sleep 2s
+if [ "$1" != "mongodb" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.mongodb
+fi
