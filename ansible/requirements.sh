@@ -47,3 +47,7 @@ sleep 2s
 if [ "$1" != "logstash" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.logstash
 fi
+sleep 2s
+if [ "$1" != "elk" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.elk
+fi
