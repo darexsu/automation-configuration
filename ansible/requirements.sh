@@ -55,3 +55,7 @@ sleep 2s
 if [ "$1" != "mongodb" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.mongodb
 fi
+sleep 2s
+if [ "$1" != "openvpn" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.openvpn
+fi
