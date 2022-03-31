@@ -59,3 +59,7 @@ sleep 2s
 if [ "$1" != "openvpn" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.openvpn
 fi
+sleep 2s
+if [ "$1" != "graylog" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.graylog
+fi
