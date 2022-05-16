@@ -15,3 +15,7 @@ sleep 2s
 if [ "$1" != "openvpn" ]; then
 /usr/local/bin/ansible-galaxy install darexsu.openvpn
 fi
+sleep 2s
+if [ "$1" != "gitlab" ]; then
+/usr/local/bin/ansible-galaxy install darexsu.gitlab
+fi
